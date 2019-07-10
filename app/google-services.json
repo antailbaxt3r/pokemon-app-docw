@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "813332680627",
+    "firebase_url": "https://pokemon-app-docw.firebaseio.com",
+    "project_id": "pokemon-app-docw",
+    "storage_bucket": "pokemon-app-docw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813332680627:android:a9331f7eb28b8e3e",
+        "android_client_info": {
+          "package_name": "com.example.pokemonappdocw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813332680627-4rbcn8or4ibrtg1v1e862ei1cga56clm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5kWW1E-JVpmc7Jqb3YCUwm3BNF4cLtb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813332680627-4rbcn8or4ibrtg1v1e862ei1cga56clm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

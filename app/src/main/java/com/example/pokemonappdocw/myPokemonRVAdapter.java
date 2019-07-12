@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.ContentHandler;
 import java.util.List;
 
 public class myPokemonRVAdapter extends RecyclerView.Adapter<PokemonViewHolder> {
@@ -36,7 +35,7 @@ public class myPokemonRVAdapter extends RecyclerView.Adapter<PokemonViewHolder> 
 
         Pokemon pokemon = pokemonList.get(position);
         holder.pokemonName.setText(pokemon.getPokemonName());
-        Picasso.get().load(pokemon.getImageUrl()).into(holder.pokemonImage);
+        Picasso.get().load(pokemon.getImageURL()).into(holder.pokemonImage);
     }
 
     @Override

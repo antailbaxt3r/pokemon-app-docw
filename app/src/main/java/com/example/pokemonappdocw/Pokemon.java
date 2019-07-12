@@ -1,21 +1,21 @@
 package com.example.pokemonappdocw;
 
 public class Pokemon {
-    private String imageUrl, legendary, pokemonName, type1, type2;
-    private int attack, defence, generation, hp, number, specialAttack, specialDefence, speed, total;
+    private String imageURL, legendary, pokemonName, type1, type2;
+    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total;
 
     public Pokemon(){
 
     }
 
-    public Pokemon(String imageUrl, String legendary, String pokemonName, String type1, String type2, int attack, int defence, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total) {
-        this.imageUrl = imageUrl;
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total) {
+        this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
         this.type1 = type1;
         this.type2 = type2;
         this.attack = attack;
-        this.defence = defence;
+        this.defense = defense;
         this.generation = generation;
         this.hp = hp;
         this.number = number;
@@ -25,12 +25,12 @@ public class Pokemon {
         this.total = total;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getLegendary() {
@@ -73,12 +73,12 @@ public class Pokemon {
         this.attack = attack;
     }
 
-    public int getDefence() {
-        return defence;
+    public int getDefense() {
+        return defense;
     }
 
-    public void setDefence(int defence) {
-        this.defence = defence;
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 
     public int getGeneration() {

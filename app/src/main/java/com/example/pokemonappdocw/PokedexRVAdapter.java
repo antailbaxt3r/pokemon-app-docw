@@ -1,6 +1,7 @@
 package com.example.pokemonappdocw;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokedexRVAdapter extends RecyclerView.Adapter<PokemonViewHolder> {
@@ -28,14 +31,15 @@ public class PokedexRVAdapter extends RecyclerView.Adapter<PokemonViewHolder> {
 
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.pokemon_item_format, parent, false);
-        return null;
+        PokemonViewHolder viewHolder = new PokemonViewHolder(itemView);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull PokemonViewHolder holder, int position) {
-        Pokemon pokemon = pokemonList.get(position);
+        final Pokemon pokemon = pokemonList.get(position);
         holder.pokemonName.setText(pokemon.getPokemonName());
-        Picasso.get().load(pokemon.getImageUrl()).into(holder.pokemonImage);
+        Picasso.get().load(pokemon.getImageURL()).into(holder.pokemonImage);
     }
 
     @Override

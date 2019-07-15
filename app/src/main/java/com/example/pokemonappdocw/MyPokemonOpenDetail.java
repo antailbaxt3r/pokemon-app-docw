@@ -18,14 +18,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class PokemonOpenDetail extends AppCompatActivity {
+public class MyPokemonOpenDetail extends AppCompatActivity {
 
     private SimpleDraweeView image;
     private TextView number, pokemonName, generation, type, attack, defense, hp, specialAttack, specialDefense,
-            speed, description, moves;
+            speed, description;
     private String numberText, pokemonNameText, generationText, typeText, attackText, defenseText, hpText,
             specialAttackText, specialDefenseText, speedText, descriptionText, imageURLText, type1, type2
-            ,numberTextFinal, move1, move2, moveText;
+            ,numberTextFinal;
     private int numberInt;
 
     private ShimmerFrameLayout shimmerFrameLayout;
@@ -35,7 +35,7 @@ public class PokemonOpenDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pokemon_open_detail);
+        setContentView(R.layout.activity_my_pokemon_open_detail);
         attachID();
 
         pokemonNameText = getIntent().getStringExtra("name");
@@ -60,8 +60,6 @@ public class PokemonOpenDetail extends AppCompatActivity {
                 specialAttackText = dataSnapshot.child("specialAttack").getValue().toString();
                 specialDefenseText = dataSnapshot.child("specialDefence").getValue().toString();
                 descriptionText = dataSnapshot.child("description").getValue().toString();
-                move1 = dataSnapshot.child("move1").getValue().toString();
-                move2 = dataSnapshot.child("move2").getValue().toString();
 
                 Uri uri = Uri.parse(imageURLText);
 
@@ -69,12 +67,6 @@ public class PokemonOpenDetail extends AppCompatActivity {
                     typeText = type1;
                 }else{
                     typeText = type1 + ", " + type2;
-                }
-
-                if(move2.isEmpty()){
-                    moveText = move1;
-                }else{
-                    moveText = move1 + ", " + move2;
                 }
 
                 numberInt = Integer.parseInt(numberText);
@@ -99,7 +91,6 @@ public class PokemonOpenDetail extends AppCompatActivity {
                 specialDefense.setText(specialDefenseText);
                 specialAttack.setText(specialAttackText);
                 description.setText(descriptionText);
-                moves.setText(moveText);
 
             }
 
@@ -126,8 +117,6 @@ public class PokemonOpenDetail extends AppCompatActivity {
         specialAttack = findViewById(R.id.specialAttackInDetail);
         specialDefense = findViewById(R.id.specialDefenseInDetail);
         description = findViewById(R.id.descriptionInDetail);
-        moves = findViewById(R.id.movesInDetail);
-
         shimmerFrameLayout = findViewById(R.id.shimmerContainer_pokedex);
     }
 

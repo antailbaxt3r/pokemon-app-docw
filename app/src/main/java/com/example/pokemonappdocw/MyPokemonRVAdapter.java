@@ -10,28 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class myPokemonRVAdapter extends RecyclerView.Adapter<PokemonViewHolder> {
+public class MyPokemonRVAdapter extends RecyclerView.Adapter<MyPokemonViewHolder> {
 
     Context context;
     private List<Pokemon> pokemonList;
+    List<Pokemon> pokemonListFiltered;
 
-    public myPokemonRVAdapter(List<Pokemon> pokemonList, Context context) {
+    public MyPokemonRVAdapter(List<Pokemon> pokemonList, Context context) {
         this.pokemonList = pokemonList;
         this.context = context;
+        this.pokemonListFiltered = new ArrayList<>(pokemonList);
     }
 
     @NonNull
     @Override
-    public PokemonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyPokemonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.pokemon_item_format, parent, false);
+        MyPokemonViewHolder viewHolder = new MyPokemonViewHolder(itemView);
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PokemonViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyPokemonViewHolder holder, int position) {
 
         Pokemon pokemon = pokemonList.get(position);
         holder.pokemonName.setText(pokemon.getPokemonName());

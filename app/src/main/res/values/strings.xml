@@ -29,4 +29,7 @@
     <string name="about_us">About Us</string>
     <string name="close_drawer">close_drawer</string>
     <string name="open_drawer">open drawer</string>
+    <string name="oops_looks_like_you_haven_t_caught_any_pokemon_n_nfind_and_scar_a_qr_code_now">Oops! Looks like you haven\'t caught any pokemon.  Find and scar a QR code now!</string>
+    <string name="you_have_caught_caught_these_pokemon">You have caught caught these pokemon :-</string>
+    <string name="moves">Moves</string>
 </resources>

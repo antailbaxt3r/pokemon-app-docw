@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class PokemonOpenDetail extends AppCompatActivity {
         pokemonNameText = getIntent().getStringExtra("name");
         pokemonReference = FirebaseDatabase.getInstance().getReference().child("allPokemon").child(pokemonNameText);
 
+//        shimmerFrameLayout = findViewById(R.id.shimmerContainer_pokedex_detail);
         shimmerFrameLayout.startShimmer();
 
         pokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,8 +111,14 @@ public class PokemonOpenDetail extends AppCompatActivity {
             }
         });
 
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setVisibility(View.INVISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.INVISIBLE);
+            }
+        }, 1000);
+
     }
 
     private void attachID(){
@@ -128,7 +136,7 @@ public class PokemonOpenDetail extends AppCompatActivity {
         description = findViewById(R.id.descriptionInDetail);
         moves = findViewById(R.id.movesInDetail);
 
-        shimmerFrameLayout = findViewById(R.id.shimmerContainer_pokedex);
+        shimmerFrameLayout = findViewById(R.id.shimmerContainer_pokedex_detail);
     }
 
 

@@ -29,7 +29,7 @@ public class MyPokemonViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), PokemonOpenDetail.class);
+                Intent intent = new Intent(view.getContext(), MyPokemonOpenDetail.class);
                 intent.putExtra("name", pokemonName.getText().toString());
                 view.getContext().startActivity(intent);
             }

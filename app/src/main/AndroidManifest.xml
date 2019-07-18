@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyPokemonOpenDetail"></activity>
+        <activity android:name=".MyPokemonOpenDetail"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PokemonOpenDetail"
             android:screenOrientation="portrait" />

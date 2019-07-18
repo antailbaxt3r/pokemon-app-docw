@@ -42,7 +42,7 @@ public class MyPokemonFragment extends Fragment {
 
     private List<Pokemon> pokemonList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private PokedexRVAdapter adapter;
+    private MyPokemonRVAdapter adapter;
     private androidx.appcompat.widget.SearchView searchView;
     private androidx.appcompat.widget.SearchView.OnQueryTextListener searchQuery;
 
@@ -138,7 +138,7 @@ public class MyPokemonFragment extends Fragment {
 
                     }
 
-                    adapter = new PokedexRVAdapter(getContext(), pokemonList);
+                    adapter = new MyPokemonRVAdapter(pokemonList, getContext());
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     shimmerFrameLayout.stopShimmer();

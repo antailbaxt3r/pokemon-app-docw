@@ -2,37 +2,13 @@ package com.example.pokemonappdocw;
 
 public class Pokemon {
     private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2;
-    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total;
+    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level;
 
     public Pokemon(){
 
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getMove1() {
-        return move1;
-    }
-
-    public void setMove1(String move1) {
-        this.move1 = move1;
-    }
-
-    public String getMove2() {
-        return move2;
-    }
-
-    public void setMove2(String move2) {
-        this.move2 = move2;
-    }
-
-    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2) {
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level) {
         this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
@@ -50,6 +26,7 @@ public class Pokemon {
         this.description = description;
         this.move1 = move1;
         this.move2 = move2;
+        this.level = level;
     }
 
     public String getImageURL() {
@@ -162,6 +139,38 @@ public class Pokemon {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMove1() {
+        return move1;
+    }
+
+    public void setMove1(String move1) {
+        this.move1 = move1;
+    }
+
+    public String getMove2() {
+        return move2;
+    }
+
+    public void setMove2(String move2) {
+        this.move2 = move2;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
 

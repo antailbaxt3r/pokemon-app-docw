@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,10 +23,10 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
 
     private SimpleDraweeView image;
     private TextView number, pokemonName, generation, type, attack, defense, hp, specialAttack, specialDefense,
-            speed, description;
+            speed, description, moves, level;
     private String numberText, pokemonNameText, generationText, typeText, attackText, defenseText, hpText,
             specialAttackText, specialDefenseText, speedText, descriptionText, imageURLText, type1, type2
-            ,numberTextFinal;
+            ,numberTextFinal, move1, move2, moveText, levelText;
     private int numberInt;
 
     private ShimmerFrameLayout shimmerFrameLayout;
@@ -60,6 +61,10 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
                 specialAttackText = dataSnapshot.child("specialAttack").getValue().toString();
                 specialDefenseText = dataSnapshot.child("specialDefence").getValue().toString();
                 descriptionText = dataSnapshot.child("description").getValue().toString();
+                move1 = dataSnapshot.child("move1").getValue().toString();
+                move2 = dataSnapshot.child("move2").getValue().toString();
+                if (dataSnapshot.child("level").getValue() != null)
+                    levelText = dataSnapshot.child("level").getValue().toString();
 
                 Uri uri = Uri.parse(imageURLText);
 
@@ -67,6 +72,12 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
                     typeText = type1;
                 }else{
                     typeText = type1 + ", " + type2;
+                }
+
+                if(move2.isEmpty()){
+                    moveText = move1;
+                }else{
+                    moveText = move1 + ", " + move2;
                 }
 
                 numberInt = Integer.parseInt(numberText);
@@ -91,6 +102,8 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
                 specialDefense.setText(specialDefenseText);
                 specialAttack.setText(specialAttackText);
                 description.setText(descriptionText);
+                moves.setText(moveText);
+                level.setText(levelText);
 
             }
 
@@ -100,24 +113,32 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
             }
         });
 
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setVisibility(View.INVISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.INVISIBLE);
+            }
+        }, 1000);
     }
 
     private void attachID(){
-        image = findViewById(R.id.poekmonImageInDetail);
-        pokemonName = findViewById(R.id.pokemonNameInDetail);
-        number = findViewById(R.id.pokemonNumberInOpenDetail);
-        generation = findViewById(R.id.generationInDetail);
-        type = findViewById(R.id.typeInDetail);
-        attack = findViewById(R.id.attackInDetail);
-        defense = findViewById(R.id.defenseInDetail);
-        speed = findViewById(R.id.speedInDetail);
-        hp = findViewById(R.id.hpInDetail);
-        specialAttack = findViewById(R.id.specialAttackInDetail);
-        specialDefense = findViewById(R.id.specialDefenseInDetail);
-        description = findViewById(R.id.descriptionInDetail);
-        shimmerFrameLayout = findViewById(R.id.shimmerContainer_pokedex);
+        image = findViewById(R.id.poekmonImageInPokeDetail);
+        pokemonName = findViewById(R.id.pokemonNameInPokeDetail);
+        number = findViewById(R.id.pokemonNumberInPokeDetail);
+        generation = findViewById(R.id.generationInPokeDetail);
+        type = findViewById(R.id.typeInPokeDetail);
+        attack = findViewById(R.id.attackInPokeDetail);
+        defense = findViewById(R.id.defenseInPokeDetail);
+        speed = findViewById(R.id.speedInPokeDetail);
+        hp = findViewById(R.id.hpInPokeDetail);
+        specialAttack = findViewById(R.id.specialAttackInPokeDetail);
+        specialDefense = findViewById(R.id.specialDefenseInPokeDetail);
+        description = findViewById(R.id.descriptionInPokeDetail);
+        moves = findViewById(R.id.movesInPokeDetail);
+        level = findViewById(R.id.levelInPokeDetail);
+
+        shimmerFrameLayout = findViewById(R.id.shimmerContainer_my_pokemon_detail);
     }
 
 

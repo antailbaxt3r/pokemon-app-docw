@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,16 +26,23 @@ public class HomeActivity extends AppCompatActivity {
     Fragment pokeFragment;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
+    TextView displayNameInDrawer;
 
+    FirebaseUser user;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Fresco.initialize(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
+        displayNameInDrawer = findViewById(R.id.name_in_drawer);
+        displayNameInDrawer.setText("Hi, " + user.getDisplayName().toString());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_my_pokemon:
                     toolbar.getMenu().clear();
+                    toolbar.inflateMenu(R.menu.pokedex_menu);
                     toolbar.setTitle(R.string.my_pokemon);
                     pokeFragment = new MyPokemonFragment();
                     loadFragment(pokeFragment);

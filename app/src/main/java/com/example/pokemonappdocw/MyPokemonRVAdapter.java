@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,7 @@ public class MyPokemonRVAdapter extends RecyclerView.Adapter<MyPokemonViewHolder
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.pokemon_item_format, parent, false);
         MyPokemonViewHolder viewHolder = new MyPokemonViewHolder(itemView);
-        return null;
+        return viewHolder;
     }
 
     @Override
@@ -46,4 +47,43 @@ public class MyPokemonRVAdapter extends RecyclerView.Adapter<MyPokemonViewHolder
     public int getItemCount() {
         return pokemonList.size();
     }
+
+
+    public Filter getFilter(){
+        return pokemonFilter;
+    }
+
+    private Filter pokemonFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            List<Pokemon> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(pokemonListFiltered);
+            }else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for(Pokemon item : pokemonListFiltered){
+
+                    if(item.getPokemonName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            pokemonList.clear();
+            pokemonList.addAll((List)filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }

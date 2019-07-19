@@ -41,8 +41,6 @@ public class HomeActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
-        displayNameInDrawer = findViewById(R.id.name_in_drawer);
-        displayNameInDrawer.setText("Hi, " + user.getDisplayName().toString());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,6 +61,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 public void onDrawerOpened(View drawerView)
                 {
+                    displayNameInDrawer = findViewById(R.id.name_in_drawer);
+                    displayNameInDrawer.setText("Hi, " + user.getDisplayName().toString().split(" ")[0]);
                     supportInvalidateOptionsMenu();
                     //drawerOpened = true;
                 }
@@ -109,6 +109,8 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_scan:
                     toolbar.getMenu().clear();
                     toolbar.setTitle(R.string.scan);
+                    pokeFragment = new QRScannerFragment();
+                    loadFragment(pokeFragment);
                     return true;
                 case R.id.navigation_pokedex:
                     toolbar.setTitle(R.string.pokedex);

@@ -130,23 +130,34 @@ public class MyPokemonFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.hasChild("pokemonList")){
-                    caughtNone.setVisibility(View.GONE);
-                    caughtAtleastOne.setVisibility(View.VISIBLE);
-                    for (DataSnapshot shot : dataSnapshot.child("pokemonList").getChildren()) {
-                        Pokemon pokemon = shot.getValue(Pokemon.class);
-                        pokemonList.add(pokemon);
 
+                    if(dataSnapshot.child("pokemonList").getChildrenCount() != 0){
+                        caughtNone.setVisibility(View.GONE);
+                        caughtAtleastOne.setVisibility(View.VISIBLE);
+                        for (DataSnapshot shot : dataSnapshot.child("pokemonList").getChildren()) {
+                            Pokemon pokemon = shot.getValue(Pokemon.class);
+                            pokemonList.add(pokemon);
+
+                        }
+
+                        adapter = new MyPokemonRVAdapter(pokemonList, getContext());
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.INVISIBLE);
+                    }else{
+                        caughtAtleastOne.setVisibility(View.GONE);
+                        caughtNone.setVisibility(View.VISIBLE);
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.INVISIBLE);
                     }
 
-                    adapter = new MyPokemonRVAdapter(pokemonList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.INVISIBLE);
 
                 }else{
                     caughtAtleastOne.setVisibility(View.GONE);
                     caughtNone.setVisibility(View.VISIBLE);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.INVISIBLE);
                 }
 
 

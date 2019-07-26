@@ -1,9 +1,11 @@
 package com.example.pokemonappdocw;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
     TextView displayNameInDrawer;
+    NavigationView drawerNavView;
 
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
@@ -41,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
+        drawerNavView = findViewById(R.id.nav_view_drawer);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,11 +63,19 @@ public class HomeActivity extends AppCompatActivity {
                     //drawerOpened = false;
                 }
 
+                @Override
+                public boolean onOptionsItemSelected(MenuItem item) {
+                    return super.onOptionsItemSelected(item);
+                }
+
                 public void onDrawerOpened(View drawerView)
                 {
                     displayNameInDrawer = findViewById(R.id.name_in_drawer);
                     displayNameInDrawer.setText("Hi, " + user.getDisplayName().toString().split(" ")[0]);
                     supportInvalidateOptionsMenu();
+
+                    drawerNavView.setNavigationItemSelectedListener(drawerNavOptions);
+
                     //drawerOpened = true;
                 }
             };
@@ -120,6 +132,29 @@ public class HomeActivity extends AppCompatActivity {
                     loadFragment(pokeFragment);
                     return true;
             }
+            return false;
+        }
+    };
+
+    private NavigationView.OnNavigationItemSelectedListener drawerNavOptions = new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+
+            switch (menuItem.getItemId()){
+
+                case(R.id.aboutUs):
+                    break;
+
+                case(R.id.logOut):
+                    firebaseAuth.signOut();
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+
+            }
+
             return false;
         }
     };

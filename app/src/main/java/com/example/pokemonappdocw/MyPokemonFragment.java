@@ -51,7 +51,6 @@ public class MyPokemonFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private String userName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +111,6 @@ public class MyPokemonFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userName = user.getDisplayName().toString();
 
         recyclerView = view.findViewById(R.id.my_pokemon_rv);
         caughtNone = view.findViewById(R.id.caughtNone);
@@ -120,7 +118,7 @@ public class MyPokemonFragment extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userName);
+        final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
         pokemonList.clear();
 
 

@@ -3,6 +3,7 @@ package com.example.pokemonappdocw;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -10,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -104,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
+
         firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -111,19 +114,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                         if(task.isSuccessful()){
 
-                            userReference.addValueEventListener(new ValueEventListener() {
+                            final FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                            System.out.println("USER is : " + user);
+                            System.out.println("UID is: " + user.getUid());
+
+                            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(nameText).build();
-
-                                    user.updateProfile(profileUpdates);
-
-                                    userReference.child("Users").child(nameText).child("username").setValue(nameText);
-                                    userReference.child("Users").child(nameText).child("contactNumber").setValue(contactText);
+                                    userReference.child("Users").child(user.getUid()).child("username").setValue(nameText);
+                                    userReference.child("Users").child(user.getUid()).child("contactNumber").setValue(contactText);
+                                    userReference.child("Users").child(user.getUid()).child("UID").setValue(user.getUid());
                                 }
 
                                 @Override
@@ -132,11 +133,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
 
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
                             Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
                             finish();
+                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            startActivity(intent);
+
                         }else{
 
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){

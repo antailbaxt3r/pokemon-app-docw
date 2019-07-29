@@ -8,6 +8,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +27,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class HomeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
@@ -33,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
+    DatabaseReference userReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
         Fresco.initialize(this);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+        userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
@@ -71,7 +80,19 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDrawerOpened(View drawerView)
                 {
                     displayNameInDrawer = findViewById(R.id.name_in_drawer);
-                    displayNameInDrawer.setText("Hi, " + user.getDisplayName().toString().split(" ")[0]);
+                    userReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            String hiText = "Hi, " + Objects.requireNonNull(dataSnapshot.child("username").getValue()).toString().split(" ")[0];
+                            displayNameInDrawer.setText(hiText);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                     supportInvalidateOptionsMenu();
 
                     drawerNavView.setNavigationItemSelectedListener(drawerNavOptions);
@@ -82,6 +103,7 @@ public class HomeActivity extends AppCompatActivity {
 
             mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.red700));
             mDrawerToggle.setDrawerIndicatorEnabled(true);
+            //noinspection deprecation
             drawer.setDrawerListener(mDrawerToggle);
             mDrawerToggle.syncState();
         }
@@ -153,6 +175,10 @@ public class HomeActivity extends AppCompatActivity {
                     finish();
                     break;
 
+                case (R.id.item_storage_drawer):
+                    Intent storageIntent = new Intent(HomeActivity.this, ItemStorage.class);
+                    startActivity(storageIntent);
+                    break;
             }
 
             return false;

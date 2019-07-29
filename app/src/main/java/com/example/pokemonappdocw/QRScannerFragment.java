@@ -120,9 +120,8 @@ public class QRScannerFragment extends Fragment {
             scanned.setTotal(pokemonDetails.getInt("total"));
             scanned.setLevel(pokemonDetails.getInt("level"));
 
-            System.out.println(firebaseAuth.getCurrentUser().getDisplayName());
             final DatabaseReference myPokemonReference = FirebaseDatabase.getInstance().getReference().child("Users")
-                    .child(firebaseAuth.getCurrentUser().getDisplayName()).child("pokemonList");
+                    .child(firebaseAuth.getCurrentUser().getUid()).child("pokemonList");
 
 
             myPokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {

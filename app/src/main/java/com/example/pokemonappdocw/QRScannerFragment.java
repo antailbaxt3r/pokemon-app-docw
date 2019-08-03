@@ -84,6 +84,8 @@ public class QRScannerFragment extends Fragment {
                             break;
                         case ("RESULTS"):
                             break;
+                        default:
+                            Toast.makeText(getActivity(), "Not a correct scan", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {

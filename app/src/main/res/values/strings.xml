@@ -37,4 +37,12 @@
     <string name="tap_to_scan_a_qr_code">Tap to scan a QR code</string>
     <string name="item_storage">Item Storage</string>
     <string name="oops_looks_like_you_have_no_items_n_nscan_a_qr_code_now">Oops! Looks like you have NO items.  Scan a QR Code NOW!</string>
+    <string name="x0">x0</string>
+    <string name="usepotion">Do you want to use a potion?</string>
+    <string name="potion">Potion</string>
+    <string name="revive">Revive</string>
+    <string name="useRevive">Do you want to use a revive?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
 </resources>

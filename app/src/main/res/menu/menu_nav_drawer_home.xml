@@ -7,7 +7,7 @@
         <item
             android:id="@+id/item_storage_drawer"
             android:title="@string/item_storage"
-            android:icon="@drawable/potion"/>
+            android:icon="@drawable/potion_icon"/>
 
     </group>
 

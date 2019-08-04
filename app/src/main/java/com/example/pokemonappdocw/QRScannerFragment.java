@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 public class QRScannerFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
+    TextView tvSteps;
 
     private IntentIntegrator qrScan;
 
@@ -43,6 +45,7 @@ public class QRScannerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_qrscanner, container, false);
 
+        tvSteps = view.findViewById(R.id.tv_steps);
         FrameLayout scanButton = view.findViewById(R.id.scanButton);
         qrScan = new IntentIntegrator(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
@@ -55,6 +58,11 @@ public class QRScannerFragment extends Fragment {
             }
         });
 
+        final DatabaseReference myPokemonReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(firebaseAuth.getCurrentUser().getUid()).child("pokemonList");
+
+        final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(firebaseAuth.getCurrentUser().getUid());
         return view;
     }
 
@@ -125,11 +133,13 @@ public class QRScannerFragment extends Fragment {
             final DatabaseReference myPokemonReference = FirebaseDatabase.getInstance().getReference().child("Users")
                     .child(firebaseAuth.getCurrentUser().getUid()).child("pokemonList");
 
+            final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                    .child(firebaseAuth.getCurrentUser().getUid());
 
+            myPokemonReference.child("caughtAtStep").setValue(tvSteps.getText().toString());
             myPokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
 
                     try {
                         if(dataSnapshot.hasChild(pokemonDetails.getString("name"))) {

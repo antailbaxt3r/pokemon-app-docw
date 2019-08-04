@@ -20,6 +20,13 @@
             app:titleTextColor="@color/red700"
             android:background="@color/white">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_storage"
+                android:visibility="gone"
+                android:id="@+id/tv_steps"
+                />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 

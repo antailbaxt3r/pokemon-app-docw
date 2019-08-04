@@ -1,6 +1,11 @@
 package com.example.pokemonappdocw;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -26,10 +31,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements SensorEventListener {
 
     Toolbar toolbar;
     Fragment pokeFragment;
@@ -37,6 +43,10 @@ public class HomeActivity extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     TextView displayNameInDrawer;
     NavigationView drawerNavView;
+
+    TextView tvSteps;
+    private SensorManager sensorManager;
+    private boolean running = false;
 
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
@@ -50,6 +60,9 @@ public class HomeActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+
+        tvSteps = (TextView) findViewById(R.id.tv_steps);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
@@ -179,9 +192,47 @@ public class HomeActivity extends AppCompatActivity {
                     Intent storageIntent = new Intent(HomeActivity.this, ItemStorage.class);
                     startActivity(storageIntent);
                     break;
+
+                case (R.id.item_step_counter):
+                    Intent stepIntent = new Intent(HomeActivity.this, StepCounterActivity.class);
+                    startActivity(stepIntent);
+                    break;
             }
 
             return false;
         }
     };
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        running = true;
+        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if (countSensor != null){
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+        }else{
+            Toast.makeText(this, "Sensor Not Found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        running = false;
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if (running){
+            tvSteps.setText(String.valueOf(sensorEvent.values[0]));
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 }

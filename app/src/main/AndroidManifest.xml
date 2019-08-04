@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItemStorage"></activity>
+        <activity android:name=".StepCounterActivity"></activity>
+        <activity android:name=".ItemStorage" />
         <activity
             android:name=".MyPokemonOpenDetail"
             android:screenOrientation="portrait" />

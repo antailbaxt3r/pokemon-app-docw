@@ -136,7 +136,7 @@ public class QRScannerFragment extends Fragment {
             final DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users")
                     .child(firebaseAuth.getCurrentUser().getUid());
 
-            myPokemonReference.child("caughtAtStep").setValue(tvSteps.getText().toString());
+
             myPokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,6 +147,22 @@ public class QRScannerFragment extends Fragment {
                         }else{
                             myPokemonReference.child(pokemonDetails.getString("name")).setValue(scanned);
                             Toast.makeText(getContext(), pokemonDetails.getString("name") + " was added to your Pokemon List!", Toast.LENGTH_SHORT).show();
+
+                            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    try {
+                                        myPokemonReference.child(pokemonDetails.getString("name")).child("caughtAtStep").setValue(Integer.parseInt(dataSnapshot.child("currentStep").getValue().toString()));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -158,6 +174,7 @@ public class QRScannerFragment extends Fragment {
 
                 }
             });
+
 
 
         } catch (JSONException e){

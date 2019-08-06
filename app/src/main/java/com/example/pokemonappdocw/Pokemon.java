@@ -2,13 +2,13 @@ package com.example.pokemonappdocw;
 
 public class Pokemon {
     private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2;
-    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level;
+    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level, caughtAtStep;
 
     public Pokemon(){
 
     }
 
-    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level) {
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level, int caughtAtStep) {
         this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
@@ -27,6 +27,15 @@ public class Pokemon {
         this.move1 = move1;
         this.move2 = move2;
         this.level = level;
+        this.caughtAtStep = caughtAtStep;
+    }
+
+    public int getCaughtAtStep() {
+        return caughtAtStep;
+    }
+
+    public void setCaughtAtStep(int caughtAtStep) {
+        this.caughtAtStep = caughtAtStep;
     }
 
     public String getImageURL() {

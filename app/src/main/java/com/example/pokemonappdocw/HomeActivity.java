@@ -227,7 +227,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
 
         if (running){
-            tvSteps.setText(String.valueOf(sensorEvent.values[0]));
+            tvSteps.setText(String.valueOf(Math.round(sensorEvent.values[0])));
+            userReference.child("currentStep").setValue(Integer.parseInt(tvSteps.getText().toString()));
         }
     }
 

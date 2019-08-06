@@ -2,6 +2,7 @@ package com.example.pokemonappdocw;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
-public class MyPokemonViewHolder extends RecyclerView.ViewHolder {
+public class MyPokemonViewHolder extends RecyclerView.ViewHolder{
 
     TextView pokemonName;
     ImageView pokemonImage;

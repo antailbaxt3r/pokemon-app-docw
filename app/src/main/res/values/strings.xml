@@ -15,7 +15,9 @@
     <string name="scan">Scan</string>
     <string name="pokedex">Pokedex</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="default_notification_channel_id">Notification</string>
+    <string name="fcm_message">Notification</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pokemon_name">Pokemon Name</string>
     <string name="generation">Generation</string>
@@ -47,4 +49,8 @@
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
     <string name="steps_walked">Steps Walked</string>
     <string name="level_up">Level Up</string>
+    <string name="add_to_party">Add To Party</string>
+    <string name="clear_party">Clear Party</string>
+    <string name="my_party">My Party</string>
+    <string name="loading">Loading...</string>
 </resources>

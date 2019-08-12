@@ -3,12 +3,13 @@ package com.example.pokemonappdocw;
 public class Pokemon {
     private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2;
     private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level, caughtAtStep;
+    private boolean alive;
 
     public Pokemon(){
 
     }
 
-    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level, int caughtAtStep) {
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level, int caughtAtStep, boolean alive) {
         this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
@@ -28,6 +29,15 @@ public class Pokemon {
         this.move2 = move2;
         this.level = level;
         this.caughtAtStep = caughtAtStep;
+        this.alive = alive;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public int getCaughtAtStep() {
@@ -182,5 +192,3 @@ public class Pokemon {
         this.level = level;
     }
 }
-
-

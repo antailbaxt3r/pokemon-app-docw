@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class ItemStorage extends AppCompatActivity {
     private CardView potionCard, reviveCard;
     private DatabaseReference itemReference;
     private FirebaseAuth firebaseAuth;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -99,7 +101,7 @@ public class ItemStorage extends AppCompatActivity {
                 heading.setText(getString(R.string.potion));
                 TextView body = potionDialog.findViewById(R.id.dialog_box_body);
                 body.setText(getString(R.string.usepotion));
-                Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
+                final Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
                 positiveButton.setText(getString(R.string.yes));
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -108,13 +110,19 @@ public class ItemStorage extends AppCompatActivity {
                         itemReference.child("potions").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                int count = Integer.parseInt(dataSnapshot.getValue().toString());
-                                if(count != 0){
-                                    count--;
-                                    itemReference.child("potions").setValue(count);
-                                }
-                                else{
+                                if (dataSnapshot.exists()){
+                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
+                                    if(count != 0){
+                                        count--;
+                                        itemReference.child("potions").setValue(count);
+                                    }
+                                    else{
+                                        Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
+                                        potionDialog.dismiss();
+                                    }
+                                }else{
                                     Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
+                                    potionDialog.dismiss();
                                 }
                             }
 
@@ -164,14 +172,21 @@ public class ItemStorage extends AppCompatActivity {
                         itemReference.child("revives").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                int count = Integer.parseInt(dataSnapshot.getValue().toString());
+                                if (dataSnapshot.exists()) {
+                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
 
-                                if(count != 0){
-                                    count--;
-                                    itemReference.child("revives").setValue(count);
-                                }
-                                else{
+                                    if (count != 0) {
+                                        count--;
+                                        itemReference.child("revives").setValue(count);
+
+                                    } else {
+                                        Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
+                                        potionDialog.dismiss();
+
+                                    }
+                                }else{
                                     Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
+                                    potionDialog.dismiss();
                                 }
 
                             }

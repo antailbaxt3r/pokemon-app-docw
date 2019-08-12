@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,7 +25,7 @@ import com.squareup.picasso.Picasso;
 public class MyPokemonOpenDetail extends AppCompatActivity {
 
     private SimpleDraweeView image;
-    private CardView levelUpButton, evolveButton;
+    private CardView levelUpButton, evolveButton, addToPartyButton;
     private TextView number, pokemonName, generation, type, attack, defense, hp, specialAttack, specialDefense,
             speed, description, moves, level, currentStepTV, caughtAtStepTV;
     private String numberText, pokemonNameText, generationText, typeText, attackText, defenseText, hpText,
@@ -34,7 +35,7 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
 
     private ShimmerFrameLayout shimmerFrameLayout;
 
-    private DatabaseReference pokemonReference;
+    private DatabaseReference pokemonReference, userReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,16 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
 
         pokemonNameText = getIntent().getStringExtra("name");
         pokemonReference = FirebaseDatabase.getInstance().getReference().child("allPokemon").child(pokemonNameText);
+        userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         shimmerFrameLayout.startShimmer();
+
+        addToPartyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addPokemonToParty(pokemonName.getText().toString());
+            }
+        });
 
         pokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -164,6 +173,28 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
         }, 1000);
     }
 
+    private void addPokemonToParty(final String pokemonname) {
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("party").hasChild(pokemonname)){
+                    Toast.makeText(MyPokemonOpenDetail.this, "This Pokemon is already in your party", Toast.LENGTH_SHORT).show();
+                }else if (dataSnapshot.child("party").getChildrenCount() <= 5){
+                    Pokemon pokemon = dataSnapshot.child("pokemonList").child(pokemonname).getValue(Pokemon.class);
+                    userReference.child("party").child(pokemonname).setValue(pokemon);
+                    Toast.makeText(MyPokemonOpenDetail.this, "Pokemon added to the party", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MyPokemonOpenDetail.this, "You already have 6 pokemon in your party. Clear your party to edit.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void attachID(){
         image = findViewById(R.id.poekmonImageInPokeDetail);
         pokemonName = findViewById(R.id.pokemonNameInPokeDetail);
@@ -183,6 +214,7 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
         caughtAtStepTV = findViewById(R.id.caughtAtStep);
         levelUpButton = findViewById(R.id.level_up_button);
         evolveButton = findViewById(R.id.evolve_button);
+        addToPartyButton = findViewById(R.id.add_to_party);
 
         shimmerFrameLayout = findViewById(R.id.shimmerContainer_my_pokemon_detail);
     }

@@ -197,6 +197,10 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                     Intent stepIntent = new Intent(HomeActivity.this, StepCounterActivity.class);
                     startActivity(stepIntent);
                     break;
+                case (R.id.my_party_drawer):
+                    Intent partyIntent = new Intent(HomeActivity.this, PartyActivity.class);
+                    startActivity(partyIntent);
+                    break;
             }
 
             return false;

@@ -34,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText name, email, contact;
     private LinearLayout registerButton, alreadyRegistered;
     private String nameText, passwordText, emailText, confirmPasswordText, contactText;
+    private LinearLayout progressBar;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference();
@@ -55,12 +56,15 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = findViewById(R.id.confirm_password_register);
         registerButton = findViewById(R.id.register_button);
         alreadyRegistered = findViewById(R.id.alreadyRegistered);
+        progressBar = findViewById(R.id.progress_bar);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                progressBar.setVisibility(View.VISIBLE);
 
                 nameText = name.getText().toString();
                 emailText = email.getText().toString();
@@ -69,14 +73,16 @@ public class RegisterActivity extends AppCompatActivity {
                 contactText = contact.getText().toString();
 
                 if(!(nameText.isEmpty()) && !(emailText.isEmpty()) && !(contactText.isEmpty()) &&  !(passwordText.isEmpty()) && !(confirmPasswordText.isEmpty())){
-                    if(!(passwordText == confirmPasswordText)){
+                    if(passwordText.equals(confirmPasswordText)){
                         registerUser();
 
                     }else{
                         Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }else{
                     Toast.makeText(RegisterActivity.this, "Fields are empty", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -96,12 +102,14 @@ public class RegisterActivity extends AppCompatActivity {
         if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
             email.setError("Please enter a valid email");
             email.requestFocus();
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
         if(passwordText.length() < 6){
             password.setError("Password length should be atleast 6 characters long");
             password.requestFocus();
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -134,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
 
                             Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                             finish();
                             Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                             startActivity(intent);
@@ -142,8 +151,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
                                 Toast.makeText(RegisterActivity.this, "You are already registered", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             }else{
                                 Toast.makeText(RegisterActivity.this, "User could not be registered. Please try again.", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                     }

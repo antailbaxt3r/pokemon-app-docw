@@ -16,7 +16,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 public class PokemonViewHolder extends RecyclerView.ViewHolder {
 
     TextView pokemonName;
-    ImageView pokemonImage;
+        ImageView pokemonImage;
     CardView pokecard;
     String imageURL;
 

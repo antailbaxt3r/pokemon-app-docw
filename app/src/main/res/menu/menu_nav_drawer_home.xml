@@ -12,6 +12,10 @@
             android:id="@+id/item_step_counter"
             android:title="@string/steps_walked"
             android:icon="@drawable/ic_directions_walk_black_24dp"/>
+        <item
+            android:id="@+id/my_party_drawer"
+            android:title="@string/my_party"
+            android:icon="@drawable/pokeballs_multiple"/>
 
     </group>
 

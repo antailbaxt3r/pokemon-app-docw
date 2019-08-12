@@ -3,18 +3,22 @@ package com.example.pokemonappdocw;
 public class Pokemon {
     private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2;
     private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level, caughtAtStep;
+    private float hpSlope, attackSlope, defenseSlope, spAttackSlope, spDefenseSlope, speedSlope;
     private boolean alive;
 
     public Pokemon(){
 
     }
 
-    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, String description, String move1, String move2, int level, int caughtAtStep, boolean alive) {
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, String description, String move1, String move2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, int level, int caughtAtStep, float hpSlope, float attackSlope, float defenseSlope, float spAttackSlope, float spDefenseSlope, float speedSlope, boolean alive) {
         this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
         this.type1 = type1;
         this.type2 = type2;
+        this.description = description;
+        this.move1 = move1;
+        this.move2 = move2;
         this.attack = attack;
         this.defense = defense;
         this.generation = generation;
@@ -24,12 +28,63 @@ public class Pokemon {
         this.specialDefence = specialDefence;
         this.speed = speed;
         this.total = total;
-        this.description = description;
-        this.move1 = move1;
-        this.move2 = move2;
         this.level = level;
         this.caughtAtStep = caughtAtStep;
+        this.hpSlope = hpSlope;
+        this.attackSlope = attackSlope;
+        this.defenseSlope = defenseSlope;
+        this.spAttackSlope = spAttackSlope;
+        this.spDefenseSlope = spDefenseSlope;
+        this.speedSlope = speedSlope;
         this.alive = alive;
+    }
+
+    public float getHpSlope() {
+        return hpSlope;
+    }
+
+    public void setHpSlope(float hpSlope) {
+        this.hpSlope = hpSlope;
+    }
+
+    public float getAttackSlope() {
+        return attackSlope;
+    }
+
+    public void setAttackSlope(float attackSlope) {
+        this.attackSlope = attackSlope;
+    }
+
+    public float getDefenseSlope() {
+        return defenseSlope;
+    }
+
+    public void setDefenseSlope(float defenseSlope) {
+        this.defenseSlope = defenseSlope;
+    }
+
+    public float getSpAttackSlope() {
+        return spAttackSlope;
+    }
+
+    public void setSpAttackSlope(float spAttackSlope) {
+        this.spAttackSlope = spAttackSlope;
+    }
+
+    public float getSpDefenseSlope() {
+        return spDefenseSlope;
+    }
+
+    public void setSpDefenseSlope(float spDefenseSlope) {
+        this.spDefenseSlope = spDefenseSlope;
+    }
+
+    public float getSpeedSlope() {
+        return speedSlope;
+    }
+
+    public void setSpeedSlope(float speedSlope) {
+        this.speedSlope = speedSlope;
     }
 
     public boolean isAlive() {

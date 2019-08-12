@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 public class MyPokemonOpenDetail extends AppCompatActivity {
 
@@ -28,10 +26,15 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
     private CardView levelUpButton, evolveButton, addToPartyButton;
     private TextView number, pokemonName, generation, type, attack, defense, hp, specialAttack, specialDefense,
             speed, description, moves, level, currentStepTV, caughtAtStepTV;
-    private String numberText, pokemonNameText, generationText, typeText, attackText, defenseText, hpText,
-            specialAttackText, specialDefenseText, speedText, descriptionText, imageURLText, type1, type2
-            ,numberTextFinal, move1, move2, moveText, levelText, currentStep, caughtAtStep;
+    private String numberText, pokemonNameText, generationText, typeText;
+    private String attackText, defenseText, hpText,
+            specialAttackText, specialDefenseText, speedText;
+    private String descriptionText, imageURLText, type1, type2,
+            numberTextFinal, move1, move2, moveText;
+    private String levelText;
+    private String currentStep, caughtAtStep;
     private int numberInt;
+    private float hpSlope, attackSlope, defenseSlope, spAttackSlope, spDefenseSlope, speedSlope;
 
     private ShimmerFrameLayout shimmerFrameLayout;
 
@@ -56,32 +59,33 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
             }
         });
 
-        pokemonReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                imageURLText = dataSnapshot.child("imageURL").getValue().toString();
-                pokemonNameText = dataSnapshot.child("pokemonName").getValue().toString();
-                numberText = dataSnapshot.child("number").getValue().toString();
-                generationText = dataSnapshot.child("generation").getValue().toString();
-                hpText = dataSnapshot.child("hp").getValue().toString();
-                type1 = dataSnapshot.child("type1").getValue().toString().toUpperCase();
-                type2 = dataSnapshot.child("type2").getValue().toString().toUpperCase();
-                attackText = dataSnapshot.child("attack").getValue().toString();
-                defenseText = dataSnapshot.child("defense").getValue().toString();
-                speedText = dataSnapshot.child("speed").getValue().toString();
-                specialAttackText = dataSnapshot.child("specialAttack").getValue().toString();
-                specialDefenseText = dataSnapshot.child("specialDefence").getValue().toString();
-                descriptionText = dataSnapshot.child("description").getValue().toString();
-                move1 = dataSnapshot.child("move1").getValue().toString();
-                move2 = dataSnapshot.child("move2").getValue().toString();
+                imageURLText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("imageURL").getValue().toString();
+                pokemonNameText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("pokemonName").getValue().toString();
+                numberText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("number").getValue().toString();
+                generationText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("generation").getValue().toString();
+                hpText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("hp").getValue().toString();
+                type1 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("type1").getValue().toString().toUpperCase();
+                type2 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("type2").getValue().toString().toUpperCase();
+                attackText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("attack").getValue().toString();
+                defenseText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("defense").getValue().toString();
+                speedText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("speed").getValue().toString();
+                specialAttackText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("specialAttack").getValue().toString();
+                specialDefenseText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("specialDefence").getValue().toString();
+                descriptionText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("description").getValue().toString();
+                move1 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("move1").getValue().toString();
+                move2 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("move2").getValue().toString();
+                hpSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("hpSlope").getValue().toString());
+                attackSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("attackSlope").getValue().toString());
+                defenseSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("defenseSlope").getValue().toString());
+                spAttackSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("spAttackSlope").getValue().toString());
+                spDefenseSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("spDefenseSlope").getValue().toString());
+                speedSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("speedSlope").getValue().toString());
 
-                if (dataSnapshot.child("caughtAtStep").getValue() != null) {
-                    caughtAtStep = dataSnapshot.child("caughtAtStep").getValue().toString();
-                }
 
-                if (dataSnapshot.child("level").getValue() != null)
-                    levelText = dataSnapshot.child("level").getValue().toString();
 
                 Uri uri = Uri.parse(imageURLText);
 
@@ -106,6 +110,14 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
                     numberTextFinal = "#" + numberText;
                 }
 
+                caughtAtStep = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("pokemonList").child(pokemonNameText).child("caughtAtStep").getValue().toString();
+
+                levelText = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("pokemonList").child(pokemonNameText).child("level").getValue().toString();
+
+                currentStep = dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentStep").getValue().toString();
+
+
+
                 image.setImageURI(uri);
                 image.setBackgroundResource(R.color.white);
                 pokemonName.setText(pokemonNameText);
@@ -121,6 +133,30 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
                 description.setText(descriptionText);
                 moves.setText(moveText);
 
+                System.out.println(currentStep);
+                System.out.println(caughtAtStep);
+                level.setText(levelText);
+                caughtAtStepTV.setText(caughtAtStep);
+                currentStepTV.setText(currentStep);
+
+                int finalHP, finalAttack, finalDefense, finalSpAttack, finalSpDefense, finalSpeed, finalLevel;
+
+                finalLevel = Integer.parseInt(level.getText().toString()) - 1;
+
+                finalHP = (int) (Integer.parseInt(hp.getText().toString()) + finalLevel * hpSlope);
+                finalAttack = (int) (Integer.parseInt(attack.getText().toString()) + finalLevel * attackSlope);
+                finalDefense = (int) (Integer.parseInt(defense.getText().toString()) + finalLevel * defenseSlope);
+                finalSpAttack = (int) (Integer.parseInt(specialAttack.getText().toString()) + finalLevel * spAttackSlope);
+                finalSpDefense = (int) (Integer.parseInt(specialDefense.getText().toString()) + finalLevel * spDefenseSlope);
+                finalSpeed = (int) (Integer.parseInt(speed.getText().toString()) + finalLevel * speedSlope);
+
+                hp.setText(String.valueOf(finalHP));
+                attack.setText(String.valueOf(finalAttack));
+                defense.setText(String.valueOf(finalDefense));
+                specialDefense.setText(String.valueOf(finalSpDefense));
+                specialAttack.setText(String.valueOf(finalSpAttack));
+                speed.setText(String.valueOf(finalSpeed));
+
             }
 
             @Override
@@ -130,31 +166,7 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
         });
 
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child("pokemonList").child(pokemonNameText).child("caughtAtStep").getValue() != null) {
-                            caughtAtStep = dataSnapshot.child("pokemonList").child(pokemonNameText).child("caughtAtStep").getValue().toString();
-                        }
 
-                        if (dataSnapshot.child("pokemonList").child(pokemonNameText).child("level").getValue() != null)
-                            levelText = dataSnapshot.child("pokemonList").child(pokemonNameText).child("level").getValue().toString();
-
-                        currentStep = dataSnapshot.child("currentStep").getValue().toString();
-
-                        System.out.println(currentStep);
-                        System.out.println(caughtAtStep);
-                        level.setText(levelText);
-                        caughtAtStepTV.setText(caughtAtStep);
-                        currentStepTV.setText(currentStep);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
         levelUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,12 +191,12 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("party").hasChild(pokemonname)){
                     Toast.makeText(MyPokemonOpenDetail.this, "This Pokemon is already in your party", Toast.LENGTH_SHORT).show();
-                }else if (dataSnapshot.child("party").getChildrenCount() <= 5){
+                }else if (dataSnapshot.child("party").getChildrenCount() <= 2){
                     Pokemon pokemon = dataSnapshot.child("pokemonList").child(pokemonname).getValue(Pokemon.class);
                     userReference.child("party").child(pokemonname).setValue(pokemon);
                     Toast.makeText(MyPokemonOpenDetail.this, "Pokemon added to the party", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(MyPokemonOpenDetail.this, "You already have 6 pokemon in your party. Clear your party to edit.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyPokemonOpenDetail.this, "You already have 3 pokemon in your party. Clear your party to edit.", Toast.LENGTH_SHORT).show();
                 }
             }
 

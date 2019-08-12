@@ -119,6 +119,7 @@ public class QRScannerFragment extends Fragment {
             scanned.setMove1(pokemonDetails.getString("move1"));
             scanned.setMove2(pokemonDetails.getString("move2"));
 
+            scanned.setSpeed(Integer.parseInt(pokemonDetails.getString("speed")));
             scanned.setAttack(pokemonDetails.getInt("attack"));
             scanned.setDefense(pokemonDetails.getInt("defense"));
             scanned.setGeneration(pokemonDetails.getInt("generation"));

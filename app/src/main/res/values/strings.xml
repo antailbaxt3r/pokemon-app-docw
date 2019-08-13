@@ -53,4 +53,7 @@
     <string name="clear_party">Clear Party</string>
     <string name="my_party">My Party</string>
     <string name="loading">Loading...</string>
+    <string name="which_pokemon_do_you_want_to_use_it_on">Which Pokemon do you want to use it on?</string>
+    <string name="hp_left">HP Left</string>
+    <string name="_0_0">0.0%</string>
 </resources>

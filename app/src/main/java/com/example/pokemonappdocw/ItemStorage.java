@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -26,16 +27,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemStorage extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TextView potions, revives;
+    private TextView potions, revives, whichPokemon;
     private CardView potionCard, reviveCard;
     private DatabaseReference itemReference;
     private FirebaseAuth firebaseAuth;
+
     private RecyclerView recyclerView;
+    List<Pokemon> pokemonList = new ArrayList<>();
+    private PartyInItemStorageRVAdapter adapter;
 
 
     @Override
@@ -58,6 +64,9 @@ public class ItemStorage extends AppCompatActivity {
                 }
             });
         }
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
 
         System.out.println(firebaseAuth.getUid());
 
@@ -94,133 +103,180 @@ public class ItemStorage extends AppCompatActivity {
         potionCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog potionDialog = new Dialog(ItemStorage.this);
-                potionDialog.setContentView(R.layout.dialog_box);
-                potionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                TextView heading =  potionDialog.findViewById(R.id.dialog_box_heading);
-                heading.setText(getString(R.string.potion));
-                TextView body = potionDialog.findViewById(R.id.dialog_box_body);
-                body.setText(getString(R.string.usepotion));
-                final Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
-                positiveButton.setText(getString(R.string.yes));
-                positiveButton.setOnClickListener(new View.OnClickListener() {
+
+                itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View v) {
-                        usePotion();
-                        itemReference.child("potions").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()){
-                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
-                                    if(count != 0){
-                                        count--;
-                                        itemReference.child("potions").setValue(count);
-                                    }
-                                    else{
-                                        Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
-                                        potionDialog.dismiss();
-                                    }
-                                }else{
-                                    Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
-                                    potionDialog.dismiss();
-                                }
-                            }
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (Integer.parseInt(dataSnapshot.child("potions").getValue().toString()) != 0){
+                            usePotion();
+                        }else{
+                            Toast.makeText(ItemStorage.this, "You have no potions :(", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-                        potionDialog.dismiss();
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-                Button negativeButton = potionDialog.findViewById(R.id.dialog_box_negative_button);
-                negativeButton.setText(getString(R.string.cancel));
-                negativeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        potionDialog.dismiss();
-                    }
-                });
-
-                potionDialog.show();
 
 
-
+//                final Dialog potionDialog = new Dialog(ItemStorage.this);
+//                potionDialog.setContentView(R.layout.dialog_box);
+//                potionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                TextView heading =  potionDialog.findViewById(R.id.dialog_box_heading);
+//                heading.setText(getString(R.string.potion));
+//                TextView body = potionDialog.findViewById(R.id.dialog_box_body);
+//                body.setText(getString(R.string.usepotion));
+//                final Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
+//                positiveButton.setText(getString(R.string.yes));
+//                positiveButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        usePotion();
+//                        itemReference.child("potions").addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.exists()){
+//                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
+//                                    if(count != 0){
+//                                        count--;
+//                                        itemReference.child("potions").setValue(count);
+//                                    }
+//                                    else{
+//                                        Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
+//                                        potionDialog.dismiss();
+//                                    }
+//                                }else{
+//                                    Toast.makeText(ItemStorage.this, "You don't have any potions :(", Toast.LENGTH_SHORT).show();
+//                                    potionDialog.dismiss();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//
+//                        potionDialog.dismiss();
+//
+//                    }
+//                });
+//                Button negativeButton = potionDialog.findViewById(R.id.dialog_box_negative_button);
+//                negativeButton.setText(getString(R.string.cancel));
+//                negativeButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        potionDialog.dismiss();
+//                    }
+//                });
+//
+//                potionDialog.show();
 
             }
         });
 
-        reviveCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog potionDialog = new Dialog(ItemStorage.this);
-                potionDialog.setContentView(R.layout.dialog_box);
-                potionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                TextView heading =  potionDialog.findViewById(R.id.dialog_box_heading);
-                heading.setText(getString(R.string.revive));
-                TextView body = potionDialog.findViewById(R.id.dialog_box_body);
-                body.setText(getString(R.string.useRevive));
-                Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
-                positiveButton.setText(getString(R.string.yes));
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        useRevive();
-                        itemReference.child("revives").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
+//        reviveCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final Dialog potionDialog = new Dialog(ItemStorage.this);
+//                potionDialog.setContentView(R.layout.dialog_box);
+//                potionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                TextView heading =  potionDialog.findViewById(R.id.dialog_box_heading);
+//                heading.setText(getString(R.string.revive));
+//                TextView body = potionDialog.findViewById(R.id.dialog_box_body);
+//                body.setText(getString(R.string.useRevive));
+//                Button positiveButton = potionDialog.findViewById(R.id.dialog_box_positive_button);
+//                positiveButton.setText(getString(R.string.yes));
+//                positiveButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        useRevive();
+//                        itemReference.child("revives").addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.exists()) {
+//                                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
+//
+//                                    if (count != 0) {
+//                                        count--;
+//                                        itemReference.child("revives").setValue(count);
+//
+//                                    } else {
+//                                        Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
+//                                        potionDialog.dismiss();
+//
+//                                    }
+//                                }else{
+//                                    Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
+//                                    potionDialog.dismiss();
+//                                }
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                        potionDialog.dismiss();
+//                    }
+//                });
+//                Button negativeButton = potionDialog.findViewById(R.id.dialog_box_negative_button);
+//                negativeButton.setText(getString(R.string.cancel));
+//                negativeButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        potionDialog.dismiss();
+//                    }
+//                });
+//
+//                potionDialog.show();
+//
+//            }
+//        });
 
-                                    if (count != 0) {
-                                        count--;
-                                        itemReference.child("revives").setValue(count);
-
-                                    } else {
-                                        Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
-                                        potionDialog.dismiss();
-
-                                    }
-                                }else{
-                                    Toast.makeText(ItemStorage.this, "You don't have any revives :(", Toast.LENGTH_SHORT).show();
-                                    potionDialog.dismiss();
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                        potionDialog.dismiss();
-                    }
-                });
-                Button negativeButton = potionDialog.findViewById(R.id.dialog_box_negative_button);
-                negativeButton.setText(getString(R.string.cancel));
-                negativeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        potionDialog.dismiss();
-                    }
-                });
-
-                potionDialog.show();
-
-            }
-        });
-
-    }
-
-    private void useRevive() {
-        //code to use Revive
     }
 
     private void usePotion() {
         //code to use Potion
+
+        pokemonList.clear();
+        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.hasChild("party")){
+
+                    pokemonList.clear();
+                    for (DataSnapshot shot : dataSnapshot.child("party").getChildren()) {
+                        Pokemon pokemon = shot.getValue(Pokemon.class);
+                        pokemonList.add(pokemon);
+                    }
+
+                    adapter = new PartyInItemStorageRVAdapter(getApplicationContext(), pokemonList);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setVisibility(View.VISIBLE);
+                    whichPokemon.setVisibility(View.VISIBLE);
+
+
+                }else{
+                    Toast.makeText(ItemStorage.this, "There are no pokemon in your party to heal", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void attachId(){
@@ -229,10 +285,12 @@ public class ItemStorage extends AppCompatActivity {
         revives = findViewById(R.id.reviveCount);
         potionCard = findViewById(R.id.potionCard);
         reviveCard = findViewById(R.id.reviveCard);
+        whichPokemon = findViewById(R.id.which_pokemon_tv);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_red_24dp));
         setSupportActionBar(toolbar);
 
+        recyclerView = findViewById(R.id.item_storage_rv);
         itemReference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
                 .child("itemList");
     }

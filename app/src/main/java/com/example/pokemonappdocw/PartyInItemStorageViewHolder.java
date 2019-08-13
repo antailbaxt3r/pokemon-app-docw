@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PartyInItemStorageViewHolder extends RecyclerView.ViewHolder {
 
-    TextView pokemonName;
-    TextView hpPercentage;
+    TextView pokemonName, hpPercentage;
     ImageView pokemonImage;
     CardView pokeCard;
 
@@ -20,8 +19,8 @@ public class PartyInItemStorageViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         pokemonName = itemView.findViewById(R.id.pokemon_name);
+        hpPercentage = itemView.findViewById(R.id.hp_percentage);
         pokemonImage = itemView.findViewById(R.id.pokemon_image);
-        hpPercentage = itemView.findViewById(R.id.hp__left_percentage);
         pokeCard = itemView.findViewById(R.id.pokeCard);
 
     }

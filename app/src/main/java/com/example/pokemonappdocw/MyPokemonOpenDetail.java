@@ -141,7 +141,7 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
 
                 int finalHP, finalAttack, finalDefense, finalSpAttack, finalSpDefense, finalSpeed, finalLevel;
 
-                finalLevel = Integer.parseInt(level.getText().toString()) - 1;
+                finalLevel = Integer.parseInt(level.getText().toString());
 
                 finalHP = (int) (Integer.parseInt(hp.getText().toString()) + finalLevel * hpSlope);
                 finalAttack = (int) (Integer.parseInt(attack.getText().toString()) + finalLevel * attackSlope);
@@ -186,7 +186,7 @@ public class MyPokemonOpenDetail extends AppCompatActivity {
     }
 
     private void addPokemonToParty(final String pokemonname) {
-        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("party").hasChild(pokemonname)){

@@ -2,11 +2,13 @@ package com.example.pokemonappdocw;
 
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,13 +89,23 @@ public class QRScannerFragment extends Fragment {
 
                         case("POKEMON"):
                             scannedPokemon(obj);
+
                             break;
                         case ("ITEM"):
+                            Toast.makeText(getContext(), "You recieved a Potion!", Toast.LENGTH_SHORT).show();
+                            scannedPotion();
                             break;
                         case ("RESULTS"):
+                            Toast.makeText(getContext(), "Results Scanned!", Toast.LENGTH_SHORT).show();
+                            scannedResults(obj);
+
+                            break;
+                        case ("POKECENTER"):
+                            Toast.makeText(getContext(), "Your Pokemon Have Been Healed!", Toast.LENGTH_SHORT).show();
+                            scannedCenter();
                             break;
                         default:
-                            Toast.makeText(getActivity(), "Not a correct scan", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Incorrect scan", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -105,7 +117,153 @@ public class QRScannerFragment extends Fragment {
         }
     }
 
+    private void scannedCenter() {
+
+        FirebaseDatabase.getInstance().getReference()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot shot : dataSnapshot.child("Users").child(firebaseAuth.getCurrentUser().getUid()).child("party").getChildren()){
+                            shot.child("hp").getRef().setValue(Integer.parseInt(dataSnapshot.child("allPokemon").child(shot.child("pokemonName").getValue().toString()).child("hp").getValue().toString()));
+                            shot.child("alive").getRef().setValue(true);
+                        }
+                        for (DataSnapshot shot : dataSnapshot.child("Users").child(firebaseAuth.getCurrentUser().getUid()).child("pokemonList").getChildren()){
+                            shot.child("hp").getRef().setValue(Integer.parseInt(dataSnapshot.child("allPokemon").child(shot.child("pokemonName").getValue().toString()).child("hp").getValue().toString()));
+                            shot.child("alive").getRef().setValue(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void scannedResults(final JSONObject results) {
+
+        try {
+            final boolean pokemon1Alive = results.getBoolean("pokemon1Alive");
+            final boolean pokemon2Alive = results.getBoolean("pokemon2Alive");
+            final boolean pokemon3Alive = results.getBoolean("pokemon3Alive");
+            final boolean pokemon4Alive = results.getBoolean("pokemon4Alive");
+            final boolean pokemon5Alive = results.getBoolean("pokemon5Alive");
+            final boolean pokemon6Alive = results.getBoolean("pokemon6Alive");
+
+            final int pokemon1HP = results.getInt("pokemon1HP");
+            final int pokemon2HP = results.getInt("pokemon2HP");
+            final int pokemon3HP = results.getInt("pokemon3HP");
+            final int pokemon4HP = results.getInt("pokemon4HP");
+            final int pokemon5HP = results.getInt("pokemon5HP");
+            final int pokemon6HP = results.getInt("pokemon6HP");
+
+            final String gymWonName = results.getString("gymWonName");
+
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon1").child("alive").setValue(pokemon1Alive);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon2").child("alive").setValue(pokemon2Alive);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon3").child("alive").setValue(pokemon3Alive);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon4").child("alive").setValue(pokemon4Alive);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon5").child("alive").setValue(pokemon5Alive);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon6").child("alive").setValue(pokemon6Alive);
+
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon1").child("hp").setValue(pokemon1HP);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon2").child("hp").setValue(pokemon2HP);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon3").child("hp").setValue(pokemon3HP);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon4").child("hp").setValue(pokemon4HP);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon5").child("hp").setValue(pokemon5HP);
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .child("party").child("pokemon6").child("hp").setValue(pokemon6HP);
+
+
+            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon1").child("pokemonName").getValue().toString())
+                                    .child("hp").setValue(pokemon1HP);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon2").child("pokemonName").getValue().toString())
+                                    .child("hp").setValue(pokemon2HP);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon3").child("pokemonName").getValue().toString())
+                                    .child("hp").setValue(pokemon3HP);
+
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon1").child("pokemonName").getValue().toString())
+                                    .child("alive").setValue(pokemon1Alive);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon2").child("pokemonName").getValue().toString())
+                                    .child("alive").setValue(pokemon2Alive);
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("pokemonList").child(dataSnapshot.child("party").child("pokemon3").child("pokemonName").getValue().toString())
+                                    .child("alive").setValue(pokemon3Alive);
+
+                            if (!gymWonName.equals("") && !gymWonName.equals(null)){
+
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                        .child("gymsWon").child(gymWonName).setValue("WON");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void scannedPotion() {
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                .child("itemList").child("potions").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()) {
+                    int count = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                    if (count < 11) {
+                        count++;
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                                .child("itemList").child("potions").setValue(count);
+                    } else {
+                        Toast.makeText(getContext(), "You cannot carry more than 10 potions", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid())
+                            .child("itemList").child("potions").setValue(1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     private void scannedPokemon(final JSONObject pokemonDetails){
+
 
         final Pokemon scanned = new Pokemon();
         try {
@@ -119,6 +277,7 @@ public class QRScannerFragment extends Fragment {
             scanned.setMove1(pokemonDetails.getString("move1"));
             scanned.setMove2(pokemonDetails.getString("move2"));
 
+            scanned.setAlive(true);
             scanned.setSpeed(Integer.parseInt(pokemonDetails.getString("speed")));
             scanned.setAttack(pokemonDetails.getInt("attack"));
             scanned.setDefense(pokemonDetails.getInt("defense"));
@@ -149,6 +308,9 @@ public class QRScannerFragment extends Fragment {
                             myPokemonReference.child(pokemonDetails.getString("name")).setValue(scanned);
                             Toast.makeText(getContext(), pokemonDetails.getString("name") + " was added to your Pokemon List!", Toast.LENGTH_SHORT).show();
 
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getContext(), R.raw.caught_pokemon);
+                            mediaPlayer.start();
+
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -175,6 +337,7 @@ public class QRScannerFragment extends Fragment {
 
                 }
             });
+
 
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PokemonAppDoCW</string>
+    <string name="app_name">Pokemon Quest!</string>
     <string name="log_in">log in</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -56,4 +56,6 @@
     <string name="which_pokemon_do_you_want_to_use_it_on">Which Pokemon do you want to use it on?</string>
     <string name="hp_left">HP Left</string>
     <string name="_0_0">0.0%</string>
+    <string name="team_name">Team Name</string>
+    <string name="my_badges">My Badges</string>
 </resources>

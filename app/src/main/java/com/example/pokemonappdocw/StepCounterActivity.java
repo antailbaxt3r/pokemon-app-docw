@@ -37,7 +37,7 @@ public class StepCounterActivity extends AppCompatActivity implements SensorEven
         if (countSensor != null){
             sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
         }else{
-            Toast.makeText(this, "Sensor Not Found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Looks like your phone doesn't support a Step Detector. Sorry!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -9,6 +9,7 @@
             android:title="@string/item_storage"
             android:icon="@drawable/potion_icon"/>
         <item
+            android:visible="false"
             android:id="@+id/item_step_counter"
             android:title="@string/steps_walked"
             android:icon="@drawable/ic_directions_walk_black_24dp"/>
@@ -16,12 +17,21 @@
             android:id="@+id/my_party_drawer"
             android:title="@string/my_party"
             android:icon="@drawable/pokeballs_multiple"/>
+        <item
+            android:id="@+id/myBadges_drawer"
+            android:title="@string/my_badges"
+            android:icon="@drawable/ic_polymer_black_24dp"/>
 
     </group>
 
     <group
         android:id="@+id/group2">
 
+
+        <item
+            android:id="@+id/appTour"
+            android:icon="@drawable/ic_layers_black_24dp"
+            android:title="App Tour"/>
         <item
             android:id="@+id/aboutUs"
             android:icon="@drawable/ic_info_outline_black_24dp"

@@ -90,28 +90,33 @@ public class PartyInItemStorageRVAdapter extends RecyclerView.Adapter<PartyInIte
                                 .child(pokemon.getPokemonName()).child("hp").getValue().toString());
 
                         System.out.println("\nleft data : " + hpLeftData + "\ntotal data : " + hpTotalData + "\npercentage data : " + hpPercentage);
-                        if (hpLeftData != hpTotalData){
 
-                            int count = Integer.parseInt(dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .child("itemList").child("potions").getValue().toString());
-                            if (count != 0) {
-                                if (hpTotalData - hpLeftData > 5) {
+                        if (pokemon.isAlive()) {
+                            if (hpLeftData != hpTotalData) {
+
+                                int count = Integer.parseInt(dataSnapshot.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("itemList").child("potions").getValue().toString());
+                                if (count != 0) {
+                                    if (hpTotalData - hpLeftData > 5) {
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("pokemonList").child(pokemon.getPokemonName()).child("hp").setValue(hpLeftData + 5);
+                                    } else {
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("pokemonList").child(pokemon.getPokemonName()).child("hp").setValue(hpTotalData);
+                                    }
+                                    count -= 1;
                                     FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .child("pokemonList").child(pokemon.getPokemonName()).child("hp").setValue(hpLeftData + 5);
-                                }else{
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .child("pokemonList").child(pokemon.getPokemonName()).child("hp").setValue(hpTotalData);
+                                            .child("itemList").child("potions").setValue(count);
+
+                                    Toast.makeText(context, "Health was increased!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "You don't have any more potions :(", Toast.LENGTH_SHORT).show();
                                 }
-                                count -= 1;
-                                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("itemList").child("potions").setValue(count);
-
-                                Toast.makeText(context, "Health was increased!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(context, "You don't have any more potions :(", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "This Pokemon is already at maximum health", Toast.LENGTH_SHORT).show();
                             }
                         }else{
-                            Toast.makeText(context, "This Pokemon is already at maximum health", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "This Pokemon has fainted and needs to be treated at a PokeCenter", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -2,6 +2,7 @@ package com.example.pokemonappdocw;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,22 +20,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
+
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.listener.OnViewInflateListener;
 
 public class HomeActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -43,6 +52,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     ActionBarDrawerToggle mDrawerToggle;
     TextView displayNameInDrawer;
     NavigationView drawerNavView;
+
+    SharedPreferences preferences;
 
     TextView tvSteps;
     private SensorManager sensorManager;
@@ -67,6 +78,10 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         BottomNavigationView navView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
         drawerNavView = findViewById(R.id.nav_view_drawer);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +143,93 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
 
         Fragment fragment = new MyPokemonFragment();
         loadFragment(fragment);
+
+        if (!preferences.getBoolean("isReturningUser", false)) {
+            showAppTour();
+            //mark first time has run.
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isReturningUser", true);
+            editor.commit();}
+    }
+
+    private void showAppTour() {
+
+        BottomNavigationItemView myPokemonView = findViewById(R.id.navigation_my_pokemon);
+        BottomNavigationItemView scanView = findViewById(R.id.navigation_scan);
+        BottomNavigationItemView pokedexView = findViewById(R.id.navigation_pokedex);
+
+
+        FancyShowCaseView welcome = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .customView(R.layout.welcome, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@NotNull View view) {
+                    }
+                })
+                .build();
+
+        FancyShowCaseView myPokemon = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .focusOn(myPokemonView)
+                .fitSystemWindows(true)
+                .customView(R.layout.my_pokemon_tour, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@org.jetbrains.annotations.NotNull View view) {
+
+                    }
+                }).build();
+
+        FancyShowCaseView scan = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .focusOn(scanView)
+                .fitSystemWindows(true)
+                .customView(R.layout.scan_tour, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@org.jetbrains.annotations.NotNull View view) {
+
+                    }
+                }).build();
+
+        FancyShowCaseView pokedex = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .focusOn(pokedexView)
+                .fitSystemWindows(true)
+                .customView(R.layout.pokedex_tour, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@org.jetbrains.annotations.NotNull View view) {
+
+                    }
+                }).build();
+
+        FancyShowCaseView menu = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .focusOn(toolbar)
+                .fitSystemWindows(true)
+                .customView(R.layout.menu_tour, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@org.jetbrains.annotations.NotNull View view) {
+
+                    }
+                }).build();
+
+        FancyShowCaseView end = new FancyShowCaseView.Builder(this)
+                .backgroundColor(R.color.transparentGray)
+                .customView(R.layout.end_tour, new OnViewInflateListener() {
+                    @Override
+                    public void onViewInflated(@NotNull View view) {
+                    }
+                })
+                .build();
+
+        FancyShowCaseQueue queue = new FancyShowCaseQueue()
+                .add(welcome)
+                .add(myPokemon)
+                .add(scan)
+                .add(pokedex)
+                .add(menu)
+                .add(end);
+
+        queue.show();
     }
 
 
@@ -179,6 +281,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
             switch (menuItem.getItemId()){
 
                 case(R.id.aboutUs):
+                    Intent aboutUsIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+                    startActivity(aboutUsIntent);
                     break;
 
                 case(R.id.logOut):
@@ -201,6 +305,14 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                     Intent partyIntent = new Intent(HomeActivity.this, PartyActivity.class);
                     startActivity(partyIntent);
                     break;
+                case(R.id.appTour):
+                    drawer.closeDrawer(GravityCompat.START);
+                    showAppTour();
+                    break;
+                case (R.id.myBadges_drawer):
+                    Intent badgeIntent = new Intent(HomeActivity.this, BadgesActivity.class);
+                    startActivity(badgeIntent);
+                    break;
             }
 
             return false;
@@ -215,7 +327,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         if (countSensor != null){
             sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
         }else{
-            Toast.makeText(this, "Sensor Not Found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Looks like your phone doesn't support a Step Detector. Sorry!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,16 +1,22 @@
 package com.example.pokemonappdocw;
 
 public class Pokemon {
-    private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2;
-    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level, caughtAtStep;
+    private String imageURL, legendary, pokemonName, type1, type2, description, move1, move2, evolvesTo;
+    private int attack, defense, generation, hp, number, specialAttack, specialDefence, speed, total, level, caughtAtStep, evolvesAtLevel;
     private float hpSlope, attackSlope, defenseSlope, spAttackSlope, spDefenseSlope, speedSlope;
-    private boolean alive;
+    private boolean alive = true;
 
     public Pokemon(){
 
     }
 
-    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2, String description, String move1, String move2, int attack, int defense, int generation, int hp, int number, int specialAttack, int specialDefence, int speed, int total, int level, int caughtAtStep, float hpSlope, float attackSlope, float defenseSlope, float spAttackSlope, float spDefenseSlope, float speedSlope, boolean alive) {
+    public Pokemon(String imageURL, String legendary, String pokemonName, String type1, String type2,
+                   String description, String move1, String move2, String evolvesTo, int attack, int defense,
+                   int generation, int hp, int number, int specialAttack, int specialDefence, int speed,
+                   int total, int level, int caughtAtStep, int evolvesAtLevel, float hpSlope, float attackSlope,
+                   float defenseSlope, float spAttackSlope, float spDefenseSlope, float speedSlope,
+                   boolean alive) {
+
         this.imageURL = imageURL;
         this.legendary = legendary;
         this.pokemonName = pokemonName;
@@ -19,6 +25,7 @@ public class Pokemon {
         this.description = description;
         this.move1 = move1;
         this.move2 = move2;
+        this.evolvesTo = evolvesTo;
         this.attack = attack;
         this.defense = defense;
         this.generation = generation;
@@ -30,6 +37,7 @@ public class Pokemon {
         this.total = total;
         this.level = level;
         this.caughtAtStep = caughtAtStep;
+        this.evolvesAtLevel = evolvesAtLevel;
         this.hpSlope = hpSlope;
         this.attackSlope = attackSlope;
         this.defenseSlope = defenseSlope;
@@ -37,6 +45,22 @@ public class Pokemon {
         this.spDefenseSlope = spDefenseSlope;
         this.speedSlope = speedSlope;
         this.alive = alive;
+    }
+
+    public String getEvolvesTo() {
+        return evolvesTo;
+    }
+
+    public void setEvolvesTo(String evolvesTo) {
+        this.evolvesTo = evolvesTo;
+    }
+
+    public int getEvolvesAtLevel() {
+        return evolvesAtLevel;
+    }
+
+    public void setEvolvesAtLevel(int evolvesAtLevel) {
+        this.evolvesAtLevel = evolvesAtLevel;
     }
 
     public float getHpSlope() {

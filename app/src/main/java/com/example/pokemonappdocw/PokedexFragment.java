@@ -117,7 +117,31 @@ public class PokedexFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot shot : dataSnapshot.getChildren()) {
                     Pokemon pokemon = shot.getValue(Pokemon.class);
+//                    String imageURLText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("imageURL").getValue().toString();
+//                    String pokemonNameText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("pokemonName").getValue().toString();
+//                    String numberText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("number").getValue().toString();
+//                    String generationText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("generation").getValue().toString();
+//                    String hpText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("hp").getValue().toString();
+//                    String type1 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("type1").getValue().toString().toUpperCase();
+//                    String type2 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("type2").getValue().toString().toUpperCase();
+//                    String attackText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("attack").getValue().toString();
+//                    String defenseText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("defense").getValue().toString();
+//                    String speedText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("speed").getValue().toString();
+//                    String specialAttackText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("specialAttack").getValue().toString();
+//                    String specialDefenseText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("specialDefence").getValue().toString();
+//                    String descriptionText = dataSnapshot.child("allPokemon").child(pokemonNameText).child("description").getValue().toString();
+//                    String move1 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("move1").getValue().toString();
+//                    String move2 = dataSnapshot.child("allPokemon").child(pokemonNameText).child("move2").getValue().toString();
+//                    float hpSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("hpSlope").getValue().toString());
+//                    float attackSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("attackSlope").getValue().toString());
+//                    float defenseSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("defenseSlope").getValue().toString());
+//                    float spAttackSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("spAttackSlope").getValue().toString());
+//                    float spDefenseSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("spDefenseSlope").getValue().toString());
+//                    float speedSlope = Float.parseFloat(dataSnapshot.child("allPokemon").child(pokemonNameText).child("speedSlope").getValue().toString());
+//                    float evolvesAtLevel.setText(dataSnapshot.child("allPokemon").child(pokemonNameText).child("evolvesAtLevel").getValue().toString());
+//                    float evolvesTo.setText(dataSnapshot.child("allPokemon").child(pokemonNameText).child("evolvesTo").getValue().toString());
                     pokemonList.add(pokemon);
+                    System.out.println(pokemon.getPokemonName());
 
                 }
 

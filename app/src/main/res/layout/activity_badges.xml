@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BadgesActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            app:title="My Badges"
+            app:titleTextColor="@color/red700"
+            android:background="@color/white">
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="2"
+        android:layout_margin="10dp"
+        android:columnCount="2">
+
+        <ImageView
+            android:layout_height="130dp"
+            android:layout_width="130dp"
+            android:layout_gravity="center"
+            android:id="@+id/badge1"
+            android:visibility="invisible"
+            android:src="@drawable/boulder_badge"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/badge2"
+            android:visibility="invisible"
+            android:src="@drawable/leaf_badge"/>
+
+        <ImageView
+            android:layout_height="150dp"
+            android:layout_width="200dp"
+            android:id="@+id/badge3"
+            android:visibility="invisible"
+            android:src="@drawable/dragon_badge"/>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="151dp"
+            android:id="@+id/badge4"
+            android:visibility="invisible"
+            android:layout_row="0"
+            android:src="@drawable/water_badge" />
+
+    </GridLayout>
+</LinearLayout>

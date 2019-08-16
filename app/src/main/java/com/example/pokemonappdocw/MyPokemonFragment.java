@@ -135,6 +135,7 @@ public class MyPokemonFragment extends Fragment {
                         for (DataSnapshot shot : dataSnapshot.child("pokemonList").getChildren()) {
                             Pokemon pokemon = shot.getValue(Pokemon.class);
                             pokemonList.add(pokemon);
+                            System.out.println(pokemon.getPokemonName());
 
                         }
 

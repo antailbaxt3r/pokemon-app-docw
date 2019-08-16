@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutUsActivity"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            app:title="@string/about_us"
+            app:titleTextColor="@color/red700"
+            android:background="@color/white">
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_margin="20dp"
+                android:layout_weight="0.4"
+                android:foregroundGravity="center"
+                android:src="@drawable/docw_logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/text"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/mincraft"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Department of Creative Works' aim is to entertain the audience in any way possible be it from quizzes to award ceremonies. We mainly work for the three festivals held at BITS Goa, organizing events during and before them. Our main job is managing the various events that we organize during the college year.\n\nThanks for playing Pokemon Quest!"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+
+                android:textAlignment="center"
+                android:layout_gravity="bottom"
+                android:fontFamily="@font/mincraft"
+                android:layout_margin="@dimen/dimen_20"
+                android:text="Mobile App Developed By - Arjun Bajpai\nGame developed by - Akash Jha"/>
+
+    </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
